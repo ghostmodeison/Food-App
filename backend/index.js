@@ -14,5 +14,5 @@ connectDB()
       };
   })
   .catch((err) => {
-    console.log("NongoDB connection failed: ", err);
+    console.log("MongoDB connection failed: ", err);
   });
