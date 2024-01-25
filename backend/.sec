@@ -1,0 +1,8 @@
+MONGODB_URL= "mongodb+srv://manish:manish123@foodordering.5aqefar.mongodb.net"
+PORT=8000
+CORS_ORIGIN=*
+
+JWT_SECRET = dfdc
+JWT_EXPIRES_IN = 1d
+JWT_REFRESH_SECRET =frgfd
+JWT_REFRESH_EXPIRES_IN = 5d
