@@ -57,7 +57,7 @@ function Cart() {
   }, [cartItemList]);
 
   return cartItemList.length === 0 ? (
-    <div className=" text-center flex justify-center my-30 space-y-10 flex-col w-2/3 mx-72 h-screen">
+    <div className=" text-center flex justify-center my-30 space-y-10 flex-col w-auto h-screen">
       <div>
         <MdRemoveShoppingCart className=" text-9xl m-auto text-slate-600" />
       </div>
@@ -73,7 +73,7 @@ function Cart() {
       </button>
     </div>
   ) : (
-    <div className="  my-40 space-y-10 flex-col justify-center items-center align-middle w-2/3 mx-72 h-screen">
+    <div className="  my-40 space-y-10 flex-col justify-center items-center align-middle w-auto m-auto mx-72 h-screen">
       <div className=" text-cyan-700 font-bold text-4xl">Cart</div>
 
       <div className="flex justify-between h-full ">

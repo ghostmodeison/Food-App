@@ -9,13 +9,11 @@ export default function LoginPage() {
   const signupClicked = useSelector((state) => state.login.signupClicked);
   return (
     <Section>
-      <div className=" my-56 h-screen ">
-        <div className="flex justify-center space-x-10 ">
-          <div className=" w-1/4 ">
-            <img src={pizza} alt="" />
-          </div>
-          {signupClicked ? <Signup /> : <Login />}
+      <div className=" my-60 flex w-auto items-center justify-center space-x-10 ">
+        <div className=" w-1/4  ">
+          <img src={pizza} alt="img" />
         </div>
+        <div>{signupClicked ? <Signup /> : <Login />}</div>
       </div>
     </Section>
   );

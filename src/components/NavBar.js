@@ -52,21 +52,15 @@ const NavBar = () => {
   }
 
   return (
-    <div className=" bg-white top-0 fixed z-20 w-full shadow-lg flex gap-64 font-bold h-20 m-auto justify-center items-center ">
-      <div className="">
+    <div className=" bg-white top-0 fixed z-20 w-full shadow-lg flex gap-24 font-bold h-20 mx-auto justify-center items-center ">
+      <div>
         <Link to="/home">
-          <img
-            height={10}
-            width={80}
-            className="logo"
-            src={logo}
-            alt="Monato"
-          />
+          <img className=" w-20 logo" src={logo} alt="Monato" />
         </Link>
       </div>
 
       <div>
-        <ul className="flex gap-x-10 ">
+        <ul className="hidden lg:flex gap-x-10 ">
           <li>
             <Link to="/home"> Home </Link>
           </li>
@@ -87,12 +81,11 @@ const NavBar = () => {
       <div>
         {isLogined ? (
           <h1>
-            {" "}
             Welcome, {userName[0].toUpperCase()}
             {userName.slice(1, userName.length)}{" "}
           </h1>
         ) : (
-          <h1>Welcome</h1>
+          <h1></h1>
         )}
       </div>
       <div className=" flex space-x-8  ">
@@ -105,7 +98,7 @@ const NavBar = () => {
           <h1 className=" px-1 "> {cartItem.length} </h1>
         </div>
         {!isLogined ? (
-          <div className=" space-x-2 ">
+          <div className=" hidden lg:flex space-x-2 ">
             <button
               onClick={loginButtonHandler}
               className="bg-blue-500 rounded-lg hover:bg-blue-700 text-white font-bold py-2 px-4"

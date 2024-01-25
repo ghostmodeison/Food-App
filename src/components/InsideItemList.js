@@ -29,7 +29,7 @@ export default function InsideItemList({ data }) {
               </h1>
             </div>
 
-            <div className=" relative m-auto w-1/3">
+            <div className=" flex justify-center align-middle items-center flex-col m-auto  w-1/3">
               <img
                 className=" rounded-md shadow-md h-32 w-40 "
                 src={CDN_URL + items?.card?.info?.imageId}
@@ -37,7 +37,7 @@ export default function InsideItemList({ data }) {
               />
               <button
                 onClick={() => addOnCartHandler(items)}
-                className=" absolute right-24 -top-5  bg-blue-400 rounded-lg hover:bg-blue-700 text-white font-bold py-2 px-4"
+                className=" relative -top-5 bg-blue-400 rounded-lg hover:bg-blue-700 text-white font-bold py-2 px-4"
               >
                 add+
               </button>

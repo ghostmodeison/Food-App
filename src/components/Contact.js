@@ -9,14 +9,14 @@ import Section from "../Animation.js/Section";
 
 export default function Contact() {
   return (
-    <div className=" m-auto justify-center h-screen flex w-3/5 text-4xl text-slate-500  ">
+    <div className="my-20 items-center space-y-12 md:flex space-x-14 m-auto justify-center h-screen  w-3/5 text-4xl text-slate-500  ">
       <div className=" h-auto m-auto ">
         <Section>
           <img className=" rounded-3xl" src={my} alt="MyImage" />
         </Section>
       </div>
 
-      <div className=" h-auto m-auto space-y-5 flex flex-col">
+      <div className="items-center h-auto m-auto space-y-5 flex flex-col">
         <Section>
           <div className=" h-auto m-auto space-y-5 flex flex-col">
             <a

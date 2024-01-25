@@ -6,11 +6,11 @@ function RestaurantCard(props) {
     resData?.info;
 
   return (
-    <div className=" bg-slate-50 flex-col justify-between p-1 w-56 h-80 border rounded-md hover:shadow-lg hover:scale-110 transition duration-200 ease-out ">
+    <div className="bg-slate-50 border flex-col mx-auto w-40 sm:w-auto justify-between p-1 rounded-md hover:shadow-lg hover:scale-110 transition duration-200 ease-out ">
       <img
         className=" h-40 rounded-md w-full"
         src={CDN_URL + cloudinaryImageId}
-        alt="burger"
+        alt="img"
       />
 
       <div className=" p-4 space-y-3  ">
@@ -37,10 +37,14 @@ export const withPromotedLabel = (RestaurantCard) => {
   return (props) => {
     return (
       <div>
-        <label className=" absolute z-10 bg-blue-400 rounded-md text-white p-1 ">
-          Promoted
-        </label>
-        <RestaurantCard {...props} />
+        <div className="mx-24 sm:mx-auto">
+          <label className="absolute z-10 bg-blue-400 rounded-md text-white p-1 ">
+            Promoted
+          </label>
+          <div>
+            <RestaurantCard {...props} />
+          </div>
+        </div>
       </div>
     );
   };
