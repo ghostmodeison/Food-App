@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { MdDelete } from "react-icons/md";
 import { decrement, addItem, removeItem } from "./Redux/slice/CartSlice";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 function Cart() {
   const dispatch = useDispatch();
@@ -13,10 +14,17 @@ function Cart() {
   const isLogined = useSelector((state) => state.login?.isLogined);
 
   const navigate = useNavigate();
+
   //checkout Button Handler
-  function checkoutButtonHandler() {
+  async function checkoutButtonHandler() {
     if (isLogined) {
-      navigate("/home");
+      await axios
+        .post("/api/v1/payment/checkout", {
+          amount: totalPrice,
+        })
+        .then((response) => console.log("This is inside response ", response))
+        .catch((error) => console.log("This is inside error ", error));
+      console.log("out");
     } else {
       toast.error("Please login first");
       navigate("/login");

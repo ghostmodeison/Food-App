@@ -21,34 +21,26 @@ export default function Login() {
       [event.target.name]: event.target.value,
     }));
   }
-
+  //login button click handler
   async function submitHandler(event) {
-    try {
-      event.preventDefault();
-      await axios
-        .post("/api/v1/user/login", formData)
-        .then((res) => {
-          if (res.data.success) {
-            console.log(res.data.data.user.username);
-            dispatch(nameHandler(res.data.data.user.username));
+    event.preventDefault();
+    await axios
+      .post("/api/v1/user/login", formData)
+      .then((res) => {
+        console.log(res);
+        if (res.data.success) {
+          dispatch(nameHandler(res.data.data.user.username));
 
-            toast.success(res.data.message);
+          toast.success(res.data.message);
 
-            navigate(-1);
-            dispatch(loginHandler(true));
-          } else {
-            toast.error("login error");
-            console.log("Wrong info info");
-          }
-        })
-        .catch((rej) => {
-          toast.error(rej.message);
-          console.log("error is : ", rej);
-          console.log("wrong info");
-        });
-    } catch (err) {
-      console.log(err);
-    }
+          navigate(-1);
+          dispatch(loginHandler(true));
+        }
+      })
+      .catch((rej) => {
+        toast.error(rej.message);
+        console.log("error is : ", rej);
+      });
   }
   return (
     <form onSubmit={submitHandler}>

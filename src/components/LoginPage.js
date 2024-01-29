@@ -10,9 +10,10 @@ export default function LoginPage() {
   return (
     <Section>
       <div className=" my-60 flex w-auto items-center justify-center space-x-10 ">
-        <div className=" w-1/4  ">
+        <div className=" hidden  lg:w-1/4  ">
           <img src={pizza} alt="img" />
         </div>
+
         <div>{signupClicked ? <Signup /> : <Login />}</div>
       </div>
     </Section>

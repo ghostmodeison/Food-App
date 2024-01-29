@@ -54,10 +54,13 @@ const NavBar = () => {
   }
   //for hamburger icon
   const [isOpen, setOpen] = useState(false);
-  const [vis, setVis] = useState("visable");
+
+  const hamburgerClickHandler = () => {
+    setOpen(!isOpen);
+  };
 
   return (
-    <div className=" bg-white top-0 w-full fixed z-20 shadow-lg  gap-24 font-bold h-20">
+    <div className=" bg-white top-0 w-full fixed z-20 shadow-lg  font-bold h-20">
       <nav className=" flex mx-5 justify-between items-center align-middle ">
         <div>
           <Link to="/home">
@@ -65,48 +68,57 @@ const NavBar = () => {
           </Link>
         </div>
 
-        <div className="  lg:flex lg:space-x-40 lg:m-auto lg:static lg:h-auto  lg:shadow-none lg:bg-transparent absolute right-0 rounded-lg top-0 z-50 bg-slate-50 justify-center align-middle items-center shadow-lg">
-          <ul className=" align-middle items-center justify-center space-y-5 m-16 lg:m-auto lg:space-y-0 lg:flex gap-20 ">
-            <li>
-              <Link to="/home"> Home </Link>
-            </li>
-            <li>
-              <Link to="/about"> About </Link>
-            </li>
-            <li>
-              <Link to="/contact"> Contact </Link>
-            </li>
-            <li>
-              <Link className=" text-blue-400 " to="/grocery">
-                🛒 Grocery
-              </Link>
-            </li>
-          </ul>
-          {!isLogined ? (
-            <div className=" flex flex-col gap-3 m-8 lg:m-auto lg:flex-none lg:flex-row  ">
-              <button
-                onClick={loginButtonHandler}
-                className="bg-blue-500 rounded-lg hover:bg-blue-700 text-white font-bold py-2 px-4"
-              >
-                Login
-              </button>
+        {
+          <div
+            className={
+              !isOpen
+                ? "hidden"
+                : "block" +
+                  " h-screen lg:flex lg:space-x-40 lg:m-auto lg:static lg:h-auto  lg:shadow-none lg:bg-transparent absolute right-0 rounded-lg top-0 z-50 bg-slate-50 justify-center align-middle items-center shadow-lg"
+            }
+          >
+            <ul className=" align-middle items-center justify-center space-y-5 m-16 lg:m-auto lg:space-y-0 lg:flex gap-20 ">
+              <li>
+                <Link to="/home">Home</Link>
+              </li>
+              <li>
+                <Link to="/about">About</Link>
+              </li>
+              <li>
+                <Link to="/contact">Contact</Link>
+              </li>
+              <li>
+                <Link className=" text-blue-400 " to="/grocery">
+                  <span> 🛒 Grocery</span>
+                </Link>
+              </li>
+            </ul>
+            {!isLogined ? (
+              <div className=" flex flex-col gap-3 m-8 lg:m-auto lg:flex-none lg:flex-row  ">
+                <button
+                  onClick={loginButtonHandler}
+                  className="bg-blue-500 rounded-lg hover:bg-blue-700 text-white font-bold py-2 px-4"
+                >
+                  Login
+                </button>
 
+                <button
+                  onClick={signupButtonHandler}
+                  className="bg-blue-500 rounded-lg hover:bg-blue-700 text-white font-bold py-2 px-4"
+                >
+                  SignUp
+                </button>
+              </div>
+            ) : (
               <button
-                onClick={signupButtonHandler}
+                onClick={logoutButtonHandler}
                 className="bg-blue-500 rounded-lg hover:bg-blue-700 text-white font-bold py-2 px-4"
               >
-                SignUp
+                Logout
               </button>
-            </div>
-          ) : (
-            <button
-              onClick={logoutButtonHandler}
-              className="bg-blue-500 rounded-lg hover:bg-blue-700 text-white font-bold py-2 px-4"
-            >
-              Logout
-            </button>
-          )}
-        </div>
+            )}
+          </div>
+        }
 
         <div className=" flex space-x-7 justify-center  align-middle items-center ">
           <div>

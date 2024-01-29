@@ -24,7 +24,7 @@ const generateAccessAndRefereshTokens = async (userId) => {
   }
 };
 //================================================================
-const registerUser = asyncHandler(async (req, res) => {
+const registerUser = asyncHandler(async (req, res, next) => {
   // get user details from frontend
   // validation - not empty
   // check if user already exists: username, email
@@ -69,7 +69,7 @@ const registerUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, createdUser, "User registered Successfully"));
 });
 //================================================================
-const loginUser = asyncHandler(async (req, res) => {
+const loginUser = asyncHandler(async (req, res, next) => {
   // req body -> data
   // username or email
   //find the user
@@ -113,7 +113,6 @@ const loginUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
   };
-  console.log("log in");
   //response to user with data
   return res
     .status(200)
@@ -132,7 +131,7 @@ const loginUser = asyncHandler(async (req, res) => {
     );
 });
 //================================================================
-const logoutUser = asyncHandler(async (req, res) => {
+const logoutUser = asyncHandler(async (req, res, next) => {
   await User.findByIdAndUpdate(
     req.user._id,
     {
@@ -157,7 +156,7 @@ const logoutUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "User logged Out"));
 });
 //============================================================
-const refreshAccessToken = asyncHandler(async (req, res) => {
+const refreshAccessToken = asyncHandler(async (req, res, next) => {
   const incomingRefreshToken =
     req.cookies.refreshToken || req.body.refreshToken;
 
@@ -205,7 +204,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   }
 });
 //================================================================
-const changeCurrentPassword = asyncHandler(async (req, res) => {
+const changeCurrentPassword = asyncHandler(async (req, res, next) => {
   const { oldPassword, newPassword } = req.body;
 
   const user = await User.findById(req.user?._id);
@@ -229,7 +228,7 @@ const getCurrentUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, req.user, "User fetched successfully"));
 });
 //================================================================
-const updateAccountDetails = asyncHandler(async (req, res) => {
+const updateAccountDetails = asyncHandler(async (req, res, next221) => {
   const { fullName, email } = req.body;
 
   if (!fullName || !email) {

@@ -2,11 +2,12 @@
   "name": "onlinefood",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://onlinefoodorderingfullstack.onrender.com",
+  "proxy": "http://localhost:8000",
   "dependencies": {
     "@reduxjs/toolkit": "^2.0.1",
     "axios": "^1.6.2",
     "caniuse-lite": "^1.0.30001579",
+    "concurrently": "^8.2.2",
     "cors": "^2.8.5",
     "framer-motion": "^10.16.16",
     "hamburger-react": "^2.5.0",
