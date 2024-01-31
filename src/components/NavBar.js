@@ -53,7 +53,7 @@ const NavBar = () => {
     }
   }
   //for hamburger icon
-  const [isOpen, setOpen] = useState(false);
+  const [isOpen, setOpen] = useState(true);
 
   const hamburgerClickHandler = () => {
     setOpen(!isOpen);

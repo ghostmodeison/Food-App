@@ -38,8 +38,7 @@ export default function Login() {
         }
       })
       .catch((rej) => {
-        toast.error(rej.message);
-        console.log("error is : ", rej);
+        toast.error(rej.response.data.message);
       });
   }
   return (

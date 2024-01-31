@@ -10,6 +10,7 @@ import { lazy, Suspense } from "react";
 import Cart from "./components/Cart";
 import LoginPage from "./components/LoginPage";
 import Dashboard from "./components/Dashboard";
+import Summary from "./components/Summary";
 
 const Grocery = lazy(() => import("./components/Grocery"));
 
@@ -50,6 +51,10 @@ const AppRouter = createBrowserRouter([
       {
         path: "/dashboard",
         element: <Dashboard />,
+      },
+      {
+        path: "/summary",
+        element: <Summary />,
       },
       {
         path: "*",

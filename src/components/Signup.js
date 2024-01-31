@@ -28,9 +28,8 @@ export default function Signup() {
             navigate("/login");
           }
         })
-        .catch((err) => {
-          toast.error("Error while registering");
-          console.log(err);
+        .catch((rej) => {
+          toast.error(rej.response.data.message);
         });
     } catch (error) {
       console.log("this is error:", error);

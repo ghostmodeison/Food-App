@@ -24,6 +24,13 @@ import paymentRouter from "./routes/payment.router.js";
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/payment", paymentRouter);
 
+//direct router for key
+app.get("/api/v1/getKey", (req, res) =>
+  res.status(200).json({
+    key: process.env.RAZORPAY_KEY,
+  })
+);
+
 app.use(globalErrorHandler);
 
 export { app };

@@ -1,11 +1,11 @@
 import Router from "express";
 import {
   checkout,
-  verifySignature,
+  paymentVerification,
 } from "../controllers/payment.controller.js";
 
 const paymentRouter = Router();
 paymentRouter.route("/checkout").post(checkout);
-paymentRouter.route("/verifySignature").post(verifySignature);
+paymentRouter.route("/paymentVerification").post(paymentVerification);
 
 export default paymentRouter;

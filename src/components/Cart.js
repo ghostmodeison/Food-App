@@ -7,6 +7,7 @@ import { MdDelete } from "react-icons/md";
 import { decrement, addItem, removeItem } from "./Redux/slice/CartSlice";
 import toast from "react-hot-toast";
 import axios from "axios";
+import razorpayImage from "../image/logo2.png";
 
 function Cart() {
   const dispatch = useDispatch();
@@ -22,9 +23,39 @@ function Cart() {
         .post("/api/v1/payment/checkout", {
           amount: totalPrice,
         })
-        .then((response) => console.log("This is inside response ", response))
+        .then(async (response) => {
+          console.log("This is inside response ", response);
+
+          const keyData = await axios.get("/api/v1/getKey");
+          const key = keyData?.data?.key;
+
+          const options = {
+            key,
+            amount: response?.data?.order?.amount,
+            currency: "INR",
+            name: "Manish Restaurant",
+            description: "Manish Restaurant's Test Transaction",
+            // image: { razorpayImage },
+            order_id: response?.data?.order?.id,
+            callback_url: "/api/v1/payment/paymentVerification",
+            prefill: {
+              name: "Gaurav Kumar",
+              email: "gaurav.kumar@example.com",
+              contact: "9000090000",
+            },
+            notes: {
+              address: "Razorpay Corporate Office",
+            },
+            theme: {
+              color: "#3399cc",
+            },
+          };
+
+          var razor = new window.Razorpay(options);
+          razor.open();
+        })
+
         .catch((error) => console.log("This is inside error ", error));
-      console.log("out");
     } else {
       toast.error("Please login first");
       navigate("/login");

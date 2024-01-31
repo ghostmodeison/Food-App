@@ -1,8 +1,9 @@
 import { json } from "react-router-dom";
 import { instance } from "../config/razorpay.config.js";
 import { ApiError } from "../utils/ApiError.js";
+import crypto from "crypto";
 
-//capture the payment
+//============ capture the payment ==================
 const checkout = async (req, res) => {
   const { amount } = req.body;
   const currency = "INR";
@@ -29,20 +30,29 @@ const checkout = async (req, res) => {
   }
 };
 
-//verify Signature
+//============= payment verification ==============
+const paymentVerification = async (req, res) => {
+  console.log("paymentVerification: ", req.body);
 
-const verifySignature = async (req, res) => {
-  const webhookSecret = "1234"; // in server (backend)
+  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+    req.body;
 
-  const signature = req.headers("x-razorpay-signature");
+  const body = razorpay_order_id + "|" + razorpay_payment_id;
 
-  const shasum = crypto.createHmac("sha256", webhookSecret);
-  shasum.update(JSON.stringify(req.body));
-  const digest = shasum.digest("hex");
+  const expectedSignature = crypto
+    .createHmac("sha256", process.env.RAZORPAY_SECRET)
+    .update(body.toString())
+    .digest("hex");
 
-  if (signature == digest) {
-    console.log("payment is authorized");
+  const isAuthentic = expectedSignature === razorpay_signature;
+
+  if (isAuthentic) {
+    res.redirect(`/summary?reference=${razorpay_payment_id}`);
+  } else {
+    res.status(200).json({
+      success: false,
+    });
   }
 };
 
-export { checkout, verifySignature };
+export { checkout, paymentVerification };
