@@ -5,6 +5,8 @@ import { globalErrorHandler } from "./middleware/error.middleware.js";
 
 const app = express();
 
+app.use(express.static("build"));
+
 app.use(
   cors({
     origin: process.env.CORES_ORIGIN,
@@ -15,8 +17,6 @@ app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
-
-app.use(express.static("public"));
 
 //routes
 import userRouter from "./routes/user.router.js";
