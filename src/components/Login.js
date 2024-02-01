@@ -58,7 +58,7 @@ export default function Login() {
         <div className="flex justify-center space-x-3">
           <input
             className="rounded-md border mx-1 p-1"
-            type="text"
+            type="password"
             name="password"
             value={formData.password}
             onChange={changeHandler}

@@ -174,7 +174,7 @@ function Cart() {
                 </h1>
                 <MdDelete
                   onClick={() => removeHandler(items)}
-                  className=" text-xl text-slate-600"
+                  className=" cursor-pointer text-xl text-slate-600"
                 />
               </div>
             </div>

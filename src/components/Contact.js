@@ -49,7 +49,7 @@ export default function Contact() {
               </a>
               <a
                 className=" cursor-pointer flex space-x-5"
-                href="https://github.com/FIREsingh/FoodOrderingwebApplication"
+                href="https://github.com/FIREsingh/foodOrdering_FullStack"
                 target="_blank"
                 rel="noreferrer"
               >

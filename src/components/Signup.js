@@ -71,7 +71,7 @@ export default function Signup() {
         <div className="flex justify-center space-x-3">
           <input
             className=" border rounded-md p-1"
-            type="text"
+            type="password"
             name="password"
             value={data.password}
             onChange={changeHandler}
