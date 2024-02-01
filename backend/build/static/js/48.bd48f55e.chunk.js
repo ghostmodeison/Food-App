@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkonlinefood=self.webpackChunkonlinefood||[]).push([[48],{48:(e,t,n)=>{n.r(t),n.d(t,{default:()=>c});var s=n(184);const c=function(){return(0,s.jsx)("div",{className:"w-2/3 mx-auto h-screen flex justify-center align-middle text-center text-4xl text-slate-500  ",children:(0,s.jsx)("h1",{className:"justify-center items-center text-center flex ",children:'This is Grocery and loaded using "Lazy Loading".'})})}}}]);
+//# sourceMappingURL=48.bd48f55e.chunk.js.map
