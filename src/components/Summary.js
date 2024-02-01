@@ -28,10 +28,6 @@ export default function Summary() {
       >
         Home
       </button>
-
-      {setTimeout(() => {
-        navigate("/home");
-      }, 3000)}
     </div>
   );
 }
