@@ -3,9 +3,9 @@ FROM ${BASE_IMAGE} AS build
 
 ENV TZ=Asia/Kolkata
 
-# Install required build tools for npm + react-scripts
+# Install required build tools
 USER root
-RUN apk add --no-cache tzdata python3 make g++
+RUN apk add --no-cache tzdata python3 make g++ bash
 
 # Set the timezone
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -13,7 +13,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 WORKDIR /app
 ADD . /app
 
-# Install dependencies (ignore peer deps conflicts if any)
+# Install dependencies with legacy-peer-deps
 RUN npm install --legacy-peer-deps
 
 # Build the app
