@@ -4,24 +4,25 @@ pipeline {
 
     environment {
         // SonarQube
-        //SONARQUBE_SERVER = 'Sonar-Server'
+    //SONARQUBE_SERVER = 'Sonar-Server'
         //SONAR_PROJECT_KEY = 'Jenkins-CICD'
 
         // AWS/ECS
-        IMAGE_NAME = "food-app"
+        IMAGE_NAME = "envr"
         IMAGE_TAG = "${BUILD_NUMBER}"
-        ECR_REPO_URI = "773195032970.dkr.ecr.ap-south-1.amazonaws.com/food-app"
+        ECR_REPO_URI = "058264451049.dkr.ecr.ap-south-1.amazonaws.com/food-app"
         AWS_REGION = "ap-south-1"
-        ECS_CLUSTER = "Manish-Cluster"
-        ECS_SERVICE = "Manish-cicd-service"
+        ECS_CLUSTER = "manish"
+        ECS_SERVICE = "manish-service"
     }
 
     stages {
         stage("Code Checkout") {
             steps {
+                // Checkout the entire repo at root (workspace is Envr)
                 git branch: 'main',
                     url: 'https://github.com/ghostmodeison/Food-App',
-                    credentialsId: 'github-token'
+                    credentialsId: '607463b7-0dff-424e-bc9d-d57524131327'
             }
         }
 
@@ -29,7 +30,7 @@ pipeline {
         //     steps {
         //         dir('.') {  // run in Envr folder root
         //             withSonarQubeEnv("${SONARQUBE_SERVER}") {
-        //                  withCredentials([string(credentialsId: 'SonarQube-Token', variable: 'SONAR_TOKEN')]) {
+        //                 withCredentials([string(credentialsId: 'SonarQube-Token', variable: 'SONAR_TOKEN')]) {
         //                     sh '''
         //                         export PATH=$PATH:/opt/sonar-scanner/bin
         //                         sonar-scanner \
@@ -45,7 +46,7 @@ pipeline {
 
         stage("Login to ECR for Base Image") {
             steps {
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
                     sh """
                         aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPO_URI}
                     """
@@ -56,7 +57,7 @@ pipeline {
         stage("Build Docker Image") {
             steps {
                 echo "🚀 Building Docker image locally"
-                dir('.') {   
+                dir('.') {   // build in root (Envr)
                     sh """
                         docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
                     """
@@ -66,7 +67,7 @@ pipeline {
 
         stage("Login to ECR and Push") {
             steps {
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
                     sh """
                         aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPO_URI}
                         docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${ECR_REPO_URI}:${IMAGE_TAG}
