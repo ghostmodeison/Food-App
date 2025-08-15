@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=773195032970.dkr.ecr.ap-south-1.amazonaws.com/node:20-alpine
+ARG BASE_IMAGE=058264451049.dkr.ecr.ap-south-1.amazonaws.com/nodejs:latest
 FROM ${BASE_IMAGE} As build
 
 LABEL Marketplace-frontend-apisversion="1.0.0.1" \
@@ -25,7 +25,7 @@ RUN npm install
 RUN npm run build
 
 # Final stage
-FROM 773195032970.dkr.ecr.ap-south-1.amazonaws.com/node:20-alpine
+FROM 058264451049.dkr.ecr.ap-south-1.amazonaws.com/nodejs:latest
 WORKDIR /app
 COPY --from=build /app .
 
