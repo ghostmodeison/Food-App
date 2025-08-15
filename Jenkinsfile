@@ -10,7 +10,7 @@ pipeline {
         // AWS/ECS
         IMAGE_NAME = "food-app"
         IMAGE_TAG = "${BUILD_NUMBER}"
-        ECR_REPO_URI = "058264451049.dkr.ecr.ap-south-1.amazonaws.com/envr-jenkins"
+        ECR_REPO_URI = "773195032970.dkr.ecr.ap-south-1.amazonaws.com/food-app"
         AWS_REGION = "ap-south-1"
         ECS_CLUSTER = "Manish-Cluster"
         ECS_SERVICE = "Manish-cicd-service"

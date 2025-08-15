@@ -1,5 +1,5 @@
-ARG BASE_IMAGE=058264451049.dkr.ecr.ap-south-1.amazonaws.com/node:20.13.1-alpine
-FROM ${BASE_IMAGE} As build
+ARG BASE_IMAGE=773195032970.dkr.ecr.ap-south-1.amazonaws.com/node
+FROM ${BASE_IMAGE} AS build
 
 ENV TZ=Asia/Kolkata
 
@@ -9,8 +9,6 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 WORKDIR /app
 ADD . /app
 
-#hello
-
 # Install dependencies again
 RUN npm install
 
@@ -18,7 +16,7 @@ RUN npm install
 RUN npm run build
 
 # Final stage
-FROM 058264451049.dkr.ecr.ap-south-1.amazonaws.com/node:20.13.1-alpine
+FROM 773195032970.dkr.ecr.ap-south-1.amazonaws.com/node
 WORKDIR /app
 COPY --from=build /app .
 
