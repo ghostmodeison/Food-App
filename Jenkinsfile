@@ -29,7 +29,7 @@ pipeline {
         //     steps {
         //         dir('.') {  // run in Envr folder root
         //             withSonarQubeEnv("${SONARQUBE_SERVER}") {
-        //                 withCredentials([string(credentialsId: 'SonarQube-Token', variable: 'SONAR_TOKEN')]) {
+        //                  withCredentials([string(credentialsId: 'SonarQube-Token', variable: 'SONAR_TOKEN')]) {
         //                     sh '''
         //                         export PATH=$PATH:/opt/sonar-scanner/bin
         //                         sonar-scanner \
