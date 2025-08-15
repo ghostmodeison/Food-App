@@ -1,33 +1,31 @@
-    ARG BASE_IMAGE=773195032970.dkr.ecr.ap-south-1.amazonaws.com/node:latest
-    FROM ${BASE_IMAGE} As build
+ARG BASE_IMAGE=773195032970.dkr.ecr.ap-south-1.amazonaws.com/node:latest
+FROM ${BASE_IMAGE} AS build
 
+ENV TZ=Asia/Kolkata
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+WORKDIR /app
+COPY . .
 
-    ENV TZ=Asia/Kolkata
+# Install dependencies including devDependencies
+ENV NODE_ENV=development
+RUN npm cache clean --force && npm install --legacy-peer-deps
 
-    # Set the timezone
-    RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+# Build the React app
+RUN npm run build
 
-    WORKDIR /app
-    ADD . /app
+# ---- Final production image ----
+FROM ${BASE_IMAGE}
+WORKDIR /app
 
-    #hello
+# Copy only build output
+COPY --from=build /app/build ./build
 
-    # Install dependencies again
-    RUN npm install
+# Install only production dependencies
+COPY package*.json ./
+ENV NODE_ENV=production
+RUN npm install --only=production --legacy-peer-deps
 
-    # Build the app
-    RUN npm run build
-
-    # Final stage
-    FROM 773195032970.dkr.ecr.ap-south-1.amazonaws.com/node:latest
-    WORKDIR /app
-    COPY --from=build /app .
-
-    # Set a non-root user
-    USER node
-
-    EXPOSE 3000
-
-    # Start the app
-    CMD ["npm", "run", "start"]
+USER node
+EXPOSE 3000
+CMD ["npm", "run", "start"]
