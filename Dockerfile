@@ -1,39 +1,33 @@
-# ---------- Build Stage ----------
-FROM 773195032970.dkr.ecr.ap-south-1.amazonaws.com/node:latest AS build
+    ARG BASE_IMAGE=773195032970.dkr.ecr.ap-south-1.amazonaws.com/node:latest
+    FROM ${BASE_IMAGE} As build
 
-ENV TZ=Asia/Kolkata
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-WORKDIR /app
 
-# Copy only package files first (better cache)
-COPY package*.json ./
+    ENV TZ=Asia/Kolkata
 
-# Update npm to latest to avoid known bugs
-RUN npm install -g npm@latest
+    # Set the timezone
+    RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# Install all deps (including devDeps for react-scripts)
-ENV NODE_ENV=development
-RUN npm install --legacy-peer-deps
+    WORKDIR /app
+    ADD . /app
 
-# Copy rest of the code
-COPY . .
+    #hello
 
-# Build production files
-RUN npm run build
+    # Install dependencies again
+    RUN npm install
 
-# ---------- Run Stage ----------
-FROM 773195032970.dkr.ecr.ap-south-1.amazonaws.com/node:latest
+    # Build the app
+    RUN npm run build
 
-WORKDIR /app
+    # Final stage
+    FROM 773195032970.dkr.ecr.ap-south-1.amazonaws.com/node:latest
+    WORKDIR /app
+    COPY --from=build /app .
 
-# Copy only the build folder and package files
-COPY --from=build /app/build ./build
-COPY package*.json ./
+    # Set a non-root user
+    USER node
 
-# Install only production deps
-ENV NODE_ENV=production
-RUN npm install --only=production --legacy-peer-deps
+    EXPOSE 3000
 
-EXPOSE 3000
-CMD ["npm", "run", "start"]
+    # Start the app
+    CMD ["npm", "run", "start"]
