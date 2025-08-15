@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=773195032970.dkr.ecr.ap-south-1.amazonaws.com/node
+ARG BASE_IMAGE=773195032970.dkr.ecr.ap-south-1.amazonaws.com/node:latest
 FROM ${BASE_IMAGE} AS build
 
 ENV TZ=Asia/Kolkata
