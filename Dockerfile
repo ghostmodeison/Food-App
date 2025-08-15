@@ -1,35 +1,33 @@
-ARG BASE_IMAGE=773195032970.dkr.ecr.ap-south-1.amazonaws.com/node:latest
-FROM ${BASE_IMAGE} AS build
+    ARG BASE_IMAGE=773195032970.dkr.ecr.ap-south-1.amazonaws.com/node:latest
+    FROM ${BASE_IMAGE} As build
 
-ENV TZ=Asia/Kolkata
 
-# Install required build tools
-USER root
-RUN apk add --no-cache tzdata python3 make g++ bash
 
-# Set the timezone
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+    ENV TZ=Asia/Kolkata
 
-WORKDIR /app
-ADD . /app
+    # Set the timezone
+    RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# Install dependencies with legacy-peer-deps
-RUN npm install --legacy-peer-deps
+    WORKDIR /app
+    ADD . /app
 
-# Build the app
-RUN npm run build
+    #hello
 
-# Final stage
-FROM ${BASE_IMAGE}
-RUN apk add --no-cache tzdata
+    # Install dependencies again
+    RUN npm install
 
-WORKDIR /app
-COPY --from=build /app ./
+    # Build the app
+    RUN npm run build
 
-# Set a non-root user
-USER node
+    # Final stage
+    FROM 773195032970.dkr.ecr.ap-south-1.amazonaws.com/node:latest
+    WORKDIR /app
+    COPY --from=build /app .
 
-EXPOSE 3000
+    # Set a non-root user
+    USER node
 
-# Start the app
-CMD ["npm", "run", "start"]
+    EXPOSE 3000
+
+    # Start the app
+    CMD ["npm", "run", "start"]
