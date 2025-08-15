@@ -89,7 +89,7 @@ pipeline {
 
         stage("Update ECS Task Definition and Deploy") {
             steps {
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
                     script {
                         def newImage = "${ECR_REPO_URI}:${IMAGE_TAG}"
                         sh """
