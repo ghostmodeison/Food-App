@@ -17,7 +17,7 @@ ADD . /app
 
 
 # Install dependencies again
-#test123456
+#test123456e
  # Install dependencies (this is where npm install will happen)
 RUN npm install
 
