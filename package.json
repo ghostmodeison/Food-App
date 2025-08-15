@@ -22,7 +22,7 @@
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
-  "author": "manish ",
+  "author": "manish",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -49,5 +49,8 @@
   "devDependencies": {
     "prettier-plugin-tailwindcss": "^0.5.9",
     "tailwindcss": "^3.2.7"
-  }
+  },
+  "description": "This is a starter pack for creating React projects with Tailwind CSS configured. It uses React version **18.2** and Tailwind CSS version **3.2**.",
+  "main": "tailwind.config.js",
+  "license": "ISC"
 }
