@@ -1,0 +1,44 @@
+{
+    "family": "jenkins-task",
+    "networkMode": "awsvpc",
+    "containerDefinitions": [
+        {
+            "name": "jenkins",
+            "image": "058264451049.dkr.ecr.ap-south-1.amazonaws.com/envr-jenkins:latest",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "name": "port",
+                    "containerPort": 3000,
+                    "hostPort": 3000,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "environment": [],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "ulimits": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/jenkins-task",
+                    "awslogs-create-group": "true",
+                    "awslogs-region": "ap-south-1",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            },
+            "systemControls": []
+        }
+    ],
+    "executionRoleArn": "arn:aws:iam::058264451049:role/ecsTaskExecutionRole",
+    "taskRoleArn": "arn:aws:iam::058264451049:role/ecsTaskExecutionRole",
+    "cpu": "1024",
+    "memory": "3072",
+    "requiresCompatibilities": [
+        "FARGATE"
+    ]
+}
