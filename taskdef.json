@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:ap-south-1:058264451049:task-definition/manish-task:1",
+    "taskDefinitionArn": "arn:aws:ecs:ap-south-1:058264451049:task-definition/manish-task:2",
     "containerDefinitions": [
         {
             "name": "manish",
@@ -37,7 +37,7 @@
     "taskRoleArn": "arn:aws:iam::058264451049:role/ecsTaskExecutionRole",
     "executionRoleArn": "arn:aws:iam::058264451049:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 1,
+    "revision": 2,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -83,8 +83,13 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2025-08-16T10:50:31.300Z",
+    "registeredAt": "2025-08-16T11:08:27.869Z",
     "registeredBy": "arn:aws:iam::058264451049:root",
     "enableFaultInjection": false,
-    "tags": []
+    "tags": [
+        {
+            "key": "Name",
+            "value": "Manish"
+        }
+    ]
 }
