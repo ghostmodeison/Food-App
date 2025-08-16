@@ -1,57 +1,90 @@
 {
-  "containerDefinitions": [
-    {
-      "name": "Zomato",
-      "image": "058264451049.dkr.ecr.ap-south-1.amazonaws.com/zomato-food:8",
-      "cpu": 0,
-      "portMappings": [
+    "taskDefinitionArn": "arn:aws:ecs:ap-south-1:058264451049:task-definition/manish-task:1",
+    "containerDefinitions": [
         {
-          "name": "zomatoport",
-          "containerPort": 4173,
-          "hostPort": 4173,
-          "protocol": "tcp",
-          "appProtocol": "http"
+            "name": "manish",
+            "image": "058264451049.dkr.ecr.ap-south-1.amazonaws.com/manish-food:10",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "name": "port",
+                    "containerPort": 3000,
+                    "hostPort": 3000,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "environment": [],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "ulimits": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/manish-task",
+                    "awslogs-create-group": "true",
+                    "awslogs-region": "ap-south-1",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            },
+            "systemControls": []
         }
-      ],
-      "essential": true,
-      "environment": [],
-      "environmentFiles": [],
-      "mountPoints": [],
-      "volumesFrom": [],
-      "ulimits": [],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-group": "/ecs/zomato-task-definition",
-          "awslogs-create-group": "true",
-          "awslogs-region": "ap-south-1",
-          "awslogs-stream-prefix": "ecs"
+    ],
+    "family": "manish-task",
+    "taskRoleArn": "arn:aws:iam::058264451049:role/ecsTaskExecutionRole",
+    "executionRoleArn": "arn:aws:iam::058264451049:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "revision": 1,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
         },
-        "secretOptions": []
-      },
-      "systemControls": []
-    }
-  ],
-  "family": "zomato-task-definition",
-  "taskRoleArn": "arn:aws:iam::058264451049:role/ecsTaskExecutionRole",
-  "executionRoleArn": "arn:aws:iam::058264451049:role/ecsTaskExecutionRole",
-  "networkMode": "awsvpc",
-  "volumes": [],
-  "placementConstraints": [],
-  "requiresCompatibilities": [
-    "FARGATE"
-  ],
-  "cpu": "1024",
-  "memory": "2048",
-  "runtimePlatform": {
-    "cpuArchitecture": "X86_64",
-    "operatingSystemFamily": "LINUX"
-  },
-  "enableFaultInjection": false,
-  "tags": [
-    {
-      "key": "Name",
-      "value": "Zomato-Task"
-    }
-  ]
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "FARGATE"
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "1024",
+    "memory": "2048",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "registeredAt": "2025-08-16T10:50:31.300Z",
+    "registeredBy": "arn:aws:iam::058264451049:root",
+    "enableFaultInjection": false,
+    "tags": []
 }
