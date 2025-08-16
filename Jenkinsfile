@@ -3,52 +3,30 @@ pipeline {
     agent { label "chandan" }
 
     environment {
-        // SonarQube
-    //SONARQUBE_SERVER = 'Sonar-Server'
-        //SONAR_PROJECT_KEY = 'Jenkins-CICD'
-
         // AWS/ECS
-        IMAGE_NAME = "envr"
-        IMAGE_TAG = "${BUILD_NUMBER}"
-        ECR_REPO_URI = "058264451049.dkr.ecr.ap-south-1.amazonaws.com/food-app"
-        AWS_REGION = "ap-south-1"
-        ECS_CLUSTER = "manish"
-        ECS_SERVICE = "manish-service"
+        IMAGE_NAME   = "zomato-food"
+        IMAGE_TAG    = "${BUILD_NUMBER}"
+        ECR_REPO_URI = "058264451049.dkr.ecr.ap-south-1.amazonaws.com/manish-food"
+        AWS_REGION   = "ap-south-1"
+        ECS_CLUSTER  = "Zomato"
+        ECS_SERVICE  = "Manish-Service"
     }
 
     stages {
         stage("Code Checkout") {
             steps {
-                // Checkout the entire repo at root (workspace is Envr)
                 git branch: 'main',
                     url: 'https://github.com/ghostmodeison/Food-App',
                     credentialsId: '607463b7-0dff-424e-bc9d-d57524131327'
             }
         }
 
-        // stage('SonarQube Scan') {
-        //     steps {
-        //         dir('.') {  // run in Envr folder root
-        //             withSonarQubeEnv("${SONARQUBE_SERVER}") {
-        //                 withCredentials([string(credentialsId: 'SonarQube-Token', variable: 'SONAR_TOKEN')]) {
-        //                     sh '''
-        //                         export PATH=$PATH:/opt/sonar-scanner/bin
-        //                         sonar-scanner \
-        //                           -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
-        //                           -Dsonar.sources=. \
-        //                           -Dsonar.login=$SONAR_TOKEN
-        //                     '''
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-
-        stage("Login to ECR for Base Image") {
+        stage("Login to ECR") {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
                     sh """
-                        aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPO_URI}
+                        aws ecr get-login-password --region ${AWS_REGION} | \
+                        docker login --username AWS --password-stdin ${ECR_REPO_URI}
                     """
                 }
             }
@@ -57,19 +35,16 @@ pipeline {
         stage("Build Docker Image") {
             steps {
                 echo "🚀 Building Docker image locally"
-                dir('.') {   // build in root (Envr)
-                    sh """
-                        docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
-                    """
-                }
+                sh """
+                    docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
+                """
             }
         }
 
-        stage("Login to ECR and Push") {
+        stage("Push Docker Image to ECR") {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
                     sh """
-                        aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPO_URI}
                         docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${ECR_REPO_URI}:${IMAGE_TAG}
                         docker push ${ECR_REPO_URI}:${IMAGE_TAG}
                     """
@@ -93,15 +68,32 @@ pipeline {
                     script {
                         def newImage = "${ECR_REPO_URI}:${IMAGE_TAG}"
                         sh """
-                            jq --arg IMAGE "$newImage" '.containerDefinitions[0].image = \$IMAGE' taskdef.json > taskdef.tmp.json && mv taskdef.tmp.json taskdef.json
+                            # Clean taskdef.json on the fly (no extra files)
+                            jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)
+                                | .containerDefinitions[0].image = "${newImage}"' taskdef.json > taskdef.json.tmp
 
-                            NEW_TASK_DEF_ARN=\$(aws ecs register-task-definition --cli-input-json file://taskdef.json --query 'taskDefinition.taskDefinitionArn' --output text --region ${AWS_REGION})
+                            mv taskdef.json.tmp taskdef.json
 
-                            echo "New Task Definition ARN: \$NEW_TASK_DEF_ARN"
+                            # Register new task definition
+                            NEW_TASK_DEF_ARN=\$(aws ecs register-task-definition \
+                                --cli-input-json file://taskdef.json \
+                                --query 'taskDefinition.taskDefinitionArn' \
+                                --output text --region ${AWS_REGION})
 
-                            aws ecs update-service --cluster ${ECS_CLUSTER} --service ${ECS_SERVICE} --task-definition \$NEW_TASK_DEF_ARN --region ${AWS_REGION}
+                            echo "✅ New Task Definition ARN: \$NEW_TASK_DEF_ARN"
 
-                            aws ecs wait services-stable --cluster ${ECS_CLUSTER} --services ${ECS_SERVICE} --region ${AWS_REGION}
+                            # Update ECS service to use the new task definition
+                            aws ecs update-service \
+                                --cluster ${ECS_CLUSTER} \
+                                --service ${ECS_SERVICE} \
+                                --task-definition \$NEW_TASK_DEF_ARN \
+                                --region ${AWS_REGION}
+
+                            # Wait until deployment is stable
+                            aws ecs wait services-stable \
+                                --cluster ${ECS_CLUSTER} \
+                                --services ${ECS_SERVICE} \
+                                --region ${AWS_REGION}
                         """
                     }
                 }
@@ -111,7 +103,7 @@ pipeline {
 
     post {
         success {
-            echo "✅ SonarQube scan passed, app built, pushed to ECR, ECS updated, and local images cleaned successfully"
+            echo "✅ App built, pushed to ECR, ECS updated, and local images cleaned successfully"
         }
         failure {
             echo "❌ Pipeline failed at some stage"

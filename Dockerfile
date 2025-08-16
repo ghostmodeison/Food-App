@@ -13,26 +13,21 @@ ENV TZ=Asia/Kolkata
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 WORKDIR /app
+
 ADD . /app
 
-
-# Install dependencies again
-#test123456e
- # Install dependencies (this is where npm install will happen)
 RUN npm install
 
-# Build the app
 RUN npm run build
 
-# Final stage
-FROM 058264451049.dkr.ecr.ap-south-1.amazonaws.com/nodejs:latest
+FROM ${BASE_IMAGE}
+
 WORKDIR /app
+
 COPY --from=build /app .
 
-# Set a non-root user
 USER node
 
 EXPOSE 3000
 
-# Start the app
 CMD ["npm", "run", "start"]
